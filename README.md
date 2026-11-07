@@ -97,6 +97,10 @@ The project's own site, [claude-seo.md](https://claude-seo.md), audited with Cla
 | `seo-ecommerce` | E-commerce Specialist | Sonnet | `/seo ecommerce` |
 | `seo-flow` | FLOW Strategist | Sonnet | `/seo flow` |
 
+OpenCode agents inherit the session model selected with `/models`. Use
+`python3 scripts/opencode_models.py --profile free|cloudflare|vertex` to map the
+same roles to any configured provider.
+
 </details>
 
 **Built for:**
@@ -260,6 +264,57 @@ claude                                   # start Claude Code
 /seo schema https://example.com          # check and generate structured data
 /seo local https://example.com           # local SEO and Google Business Profile
 ```
+
+## OpenCode
+
+The repository ships a native OpenCode layer in `.opencode/`. It includes all 26
+skills, 19 subagents, 35 commands, a plugin, and the same Python runtime. You do
+not need a Claude Code subscription or the Claude CLI.
+
+Global install (uses `$XDG_CONFIG_HOME/opencode` and `$XDG_DATA_HOME/claude-seo`):
+
+```bash
+git clone --depth 1 https://github.com/AgriciDaniel/claude-seo.git
+cd claude-seo
+./install-opencode.sh
+```
+
+Project-local definitions with the shared runtime:
+
+```bash
+./install-opencode.sh --project /path/to/site
+```
+
+Run either command form in OpenCode:
+
+```text
+/seo audit https://example.com
+/seo-audit https://example.com
+/seo doctor
+```
+
+Subagents inherit the model selected with `/models`. To assign per-agent models:
+
+```bash
+python3 scripts/opencode_models.py --profile free
+python3 scripts/opencode_models.py --profile cloudflare
+python3 scripts/opencode_models.py --profile vertex
+python3 scripts/opencode_models.py --set seo-content=provider/model
+```
+
+Optional extensions use the OpenCode installer, which writes dedicated MCP and
+credential files without editing `opencode.json`:
+
+```bash
+python3 scripts/opencode_extensions.py list
+python3 scripts/opencode_extensions.py install dataforseo
+python3 scripts/opencode_extensions.py install firecrawl
+```
+
+Fedora system packages, Playwright notes, MCP details, and troubleshooting are
+in [docs/OPENCODE.md](docs/OPENCODE.md). The canonical `skills/` and `agents/`
+trees remain the source of truth; after editing them, run
+`python3 scripts/opencode_sync.py` and check with `--check`.
 
 ## FAQ
 

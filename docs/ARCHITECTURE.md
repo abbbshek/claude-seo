@@ -63,6 +63,27 @@ The plugin ships 26 sub-skills (22 core + 1 orchestrator + 1 framework integrati
     └── seo-image-gen.md        # Banana MCP mirror
 ```
 
+## OpenCode layer
+
+OpenCode reads a generated native tree:
+
+```text
+.opencode/
+├── opencode.json                 # project permissions for seo-* skills and subagents
+├── skills/<id>/SKILL.md          # generated from skills/
+├── agents/seo-*.md               # generated from agents/
+├── commands/seo*.md              # /seo router plus one command per subcommand
+└── plugins/claude-seo/index.ts   # runtime env, MCP, models, schema validation
+```
+
+`scripts/opencode_sync.py` generates the tree from the canonical `skills/` and
+`agents/` sources and rewrites Claude path tokens to `$SEO_ROOT` and
+`$SEO_SKILLS_DIR`. The plugin supplies those variables to every shell command.
+CI runs `opencode_sync.py --check` so the generated tree cannot drift.
+
+The canonical trees remain the source of truth for Claude Code and the other
+portable harnesses.
+
 ## Component Types
 
 ### Skills

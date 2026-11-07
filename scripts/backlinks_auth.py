@@ -49,8 +49,23 @@ except ImportError as _import_exc:
         "Install with: pip install -r requirements.txt"
     ) from _import_exc
 
-CONFIG_PATH = os.path.expanduser("~/.config/claude-seo/backlinks-api.json")
-CACHE_DIR = os.path.expanduser("~/.cache/claude-seo/commoncrawl")
+def _seo_config_dir() -> str:
+    return os.path.expanduser(
+        os.environ.get("SEO_CONFIG_DIR")
+        or os.environ.get("CLAUDE_SEO_CONFIG_DIR")
+        or "~/.config/claude-seo"
+    )
+
+
+def _seo_cache_dir(name: str) -> str:
+    base = os.environ.get("SEO_CACHE_DIR") or os.environ.get("CLAUDE_SEO_CACHE_DIR")
+    if base:
+        return os.path.join(os.path.expanduser(base), name)
+    return os.path.expanduser(f"~/.cache/claude-seo/{name}")
+
+
+CONFIG_PATH = os.path.join(_seo_config_dir(), "backlinks-api.json")
+CACHE_DIR = _seo_cache_dir("commoncrawl")
 
 # Which services need which auth type
 SERVICE_AUTH = {

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Provider-neutral entry point for the managed SEO runtime.
+#
+# The Claude-compatible launcher remains scripts/claude-seo. This wrapper
+# accepts the OpenCode-era SEO_* environment names and forwards to it, so
+# skills can use a single stable command:
+#
+#   "$SEO_ROOT/scripts/seo" run fetch_page.py https://example.com --json
+
+launcher_dir="$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+
+if [[ -n "${SEO_PYTHON:-}" && -z "${CLAUDE_SEO_PYTHON:-}" ]]; then
+    export CLAUDE_SEO_PYTHON="${SEO_PYTHON}"
+fi
+if [[ -n "${SEO_DATA_DIR:-}" && -z "${CLAUDE_SEO_DATA_DIR:-}" ]]; then
+    export CLAUDE_SEO_DATA_DIR="${SEO_DATA_DIR}"
+fi
+
+exec "${launcher_dir}/claude-seo" "$@"

@@ -52,7 +52,15 @@ except ImportError as _import_exc:  # pragma: no cover - hard dependency
         "Install with: pip install -r requirements.txt"
     ) from _import_exc
 
-CONFIG_PATH = os.path.expanduser("~/.config/claude-seo/matomo.json")
+def _seo_config_dir() -> str:
+    return os.path.expanduser(
+        os.environ.get("SEO_CONFIG_DIR")
+        or os.environ.get("CLAUDE_SEO_CONFIG_DIR")
+        or "~/.config/claude-seo"
+    )
+
+
+CONFIG_PATH = os.path.join(_seo_config_dir(), "matomo.json")
 DEFAULT_TIMEOUT = 15
 USER_AGENT = "ClaudeSEO/2.3.0"
 LOCAL_TARGETS_ENV = "CLAUDE_SEO_LOCAL_TARGETS"

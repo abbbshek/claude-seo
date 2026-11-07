@@ -27,8 +27,18 @@ import sys
 import time
 from typing import Optional
 
-CONFIG_PATH = os.path.expanduser("~/.config/claude-seo/google-api.json")
-TOKEN_PATH = os.path.expanduser("~/.config/claude-seo/oauth-token.json")
+
+def _seo_config_dir() -> str:
+    """Resolve the credential directory for Claude and OpenCode installs."""
+    return os.path.expanduser(
+        os.environ.get("SEO_CONFIG_DIR")
+        or os.environ.get("CLAUDE_SEO_CONFIG_DIR")
+        or "~/.config/claude-seo"
+    )
+
+
+CONFIG_PATH = os.path.join(_seo_config_dir(), "google-api.json")
+TOKEN_PATH = os.path.join(_seo_config_dir(), "oauth-token.json")
 
 # Service-to-scope mapping
 SCOPES = {
@@ -213,9 +223,11 @@ def _load_gcloud_adc() -> Optional[dict]:
 
 
 def _prefers_gcloud() -> bool:
-    """CLAUDE_SEO_GOOGLE_AUTH=adc picks the gcloud sign-in even when a service
-    account is configured (which may not have access to every property)."""
-    return os.environ.get("CLAUDE_SEO_GOOGLE_AUTH", "").strip().lower() in ("adc", "gcloud")
+    """SEO_GOOGLE_AUTH=adc (or the legacy CLAUDE_SEO_GOOGLE_AUTH) picks the
+    gcloud sign-in even when a service account is configured (which may not
+    have access to every property)."""
+    value = os.environ.get("SEO_GOOGLE_AUTH") or os.environ.get("CLAUDE_SEO_GOOGLE_AUTH", "")
+    return value.strip().lower() in ("adc", "gcloud")
 
 
 def get_gcloud_credentials(scopes: list):

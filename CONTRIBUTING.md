@@ -33,6 +33,25 @@ cd claude-seo
 bash install.sh
 ```
 
+#### Option C: OpenCode
+
+```bash
+git clone https://github.com/YOUR_USERNAME/claude-seo.git
+cd claude-seo
+./install-opencode.sh --skip-setup
+```
+
+The OpenCode layer in `.opencode/` is generated from the canonical `skills/` and
+`agents/` trees. After editing either tree, regenerate it:
+
+```bash
+python3 scripts/opencode_sync.py
+python3 scripts/opencode_sync.py --check
+```
+
+Do not hand-edit files under `.opencode/skills`, `.opencode/agents`, or
+`.opencode/commands`; the sync check will overwrite or reject them.
+
 #### Option B: GitHub Codespaces / VS Code Dev Containers
 
 A `.devcontainer/devcontainer.json` is included so you can develop without any
@@ -58,6 +77,7 @@ install chromium`). No additional setup needed for either.
 - Reference files should be focused and under 200 lines
 - Follow kebab-case naming for all directories and files
 - Keep dependencies minimal
+- After changing `skills/` or `agents/`, run `python3 scripts/opencode_sync.py` and commit the generated `.opencode/` changes
 
 ### Code Style
 

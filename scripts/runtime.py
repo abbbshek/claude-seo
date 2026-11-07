@@ -120,7 +120,7 @@ def _configured_data_dir(raw: str) -> Path:
 
 
 def _data_dir(root: Path) -> tuple[Path, str]:
-    override = os.environ.get("CLAUDE_SEO_DATA_DIR")
+    override = os.environ.get("SEO_DATA_DIR") or os.environ.get("CLAUDE_SEO_DATA_DIR")
     if override:
         return _configured_data_dir(override), "override"
     plugin_data = os.environ.get("CLAUDE_PLUGIN_DATA")

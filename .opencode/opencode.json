@@ -1,0 +1,15 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permissions": [
+    {
+      "action": "skill",
+      "resource": "seo-*",
+      "effect": "allow"
+    },
+    {
+      "action": "subagent",
+      "resource": "seo-*",
+      "effect": "allow"
+    }
+  ]
+}

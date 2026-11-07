@@ -1,11 +1,11 @@
 # Claude SEO: Multi-Platform Agent Instructions
 
-> For **Cursor**, **Cursor Cloud Agents**, **Google Antigravity**, **Gemini CLI**,
-> **Grok Build**,
+> For **OpenCode**, **Cursor**, **Cursor Cloud Agents**, **Google Antigravity**,
+> **Gemini CLI**, **Grok Build**,
 > **OpenAI Codex CLI**, **Cline**, **Aider**, and any other agent harness that
 > reads project-root agent instructions.
 >
-> Claude Code users: see `CLAUDE.md` instead.
+> Claude Code users: see `CLAUDE.md` instead. OpenCode users: see `docs/OPENCODE.md`.
 
 ## Cross-platform portability (v2.0.0)
 
@@ -25,6 +25,7 @@ descriptive comments) that other harnesses may ignore but do not reject.
 
 | Harness | How to load claude-seo |
 |---|---|
+| **OpenCode** | Native definitions live in `.opencode/`. Run `/seo <command>` or `/seo-<command>`; install globally with `./install-opencode.sh`. See `docs/OPENCODE.md`. |
 | **Cursor** | Symlink or copy `skills/` and `agents/` into `.cursor/rules/`. Commands are invoked as text prompts; the harness reads `SKILL.md` body as system context. |
 | **Cursor Cloud Agents** | Push the repo; Cloud Agents read `AGENTS.md` automatically at session start. |
 | **Google Antigravity** | Point the workspace at this repo root; Antigravity reads `AGENTS.md` first, falls back to `skills/`. |
@@ -52,11 +53,39 @@ Where claude-seo skills mention Claude Code tools (`Read`, `Write`, `Edit`,
 These mappings are automatic in most harnesses; we list them for transparency
 in case a recipe needs a specific call.
 
+## OpenCode native layer
+
+OpenCode reads this file and discovers native definitions in `.opencode/`:
+
+- Skills: `.opencode/skills/<id>/SKILL.md`
+- Subagents: `.opencode/agents/seo-*.md`
+- Commands: `.opencode/commands/seo*.md`
+- Plugin: `.opencode/plugins/claude-seo/index.ts`
+
+Runtime commands use `"$SEO_ROOT/scripts/seo" run ...`. The plugin sets
+`SEO_ROOT`, `SEO_SKILLS_DIR`, and `SEO_DATA_DIR` for every shell command. Do not
+use the Claude `${CLAUDE_PLUGIN_ROOT}` token in OpenCode sessions.
+
+Generated files are committed. After editing canonical `skills/` or `agents/`,
+run `python3 scripts/opencode_sync.py`; CI checks drift with `--check`.
+
+Models: OpenCode subagents inherit the session model. Optional per-agent
+profiles are written by `python3 scripts/opencode_models.py --profile
+free|cloudflare|vertex` to `claude-seo.models.json`; the plugin applies them
+when a subagent is launched.
+
+Extensions: `python3 scripts/opencode_extensions.py install <name>` writes MCP
+servers to `claude-seo.mcp.json` and credentials to `claude-seo.env.json`; the
+plugin registers them without editing `opencode.json`.
+
+Fedora: see `docs/OPENCODE.md` for system packages, Playwright, and
+troubleshooting.
+
 ## Overview
 
 Claude SEO is a Tier 4 SEO analysis skill with 26 sub-skills (22 core + 1 orchestrator +
 1 framework integration + 2 extension mirrors), 19 sub-agents (16 core + 1 framework
-integration + 2 extension mirrors), and 60 Python execution scripts.
+integration + 2 extension mirrors), and 63 Python execution scripts.
 
 ## Quick Reference
 
@@ -167,7 +196,8 @@ skills/                    # 26 sub-skills (auto-discovered)
   seo-dataforseo/         # DataForSEO (extension)
   seo-image-gen/          # AI images (extension)
 agents/                    # 19 subagents
-scripts/                   # 60 Python scripts, including the managed runtime
+.opencode/                 # Generated OpenCode-native skills, agents, commands, plugin
+scripts/                   # 63 Python scripts, including the managed runtime
 schema/                    # JSON-LD templates
 extensions/                # 9 MCP extensions: DataForSEO, Firecrawl, Banana, Ahrefs, SE Ranking, Profound, Bing Webmaster, Matomo, Unlighthouse
 ```

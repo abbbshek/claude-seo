@@ -48,7 +48,9 @@ except ImportError:
 # CLAUDE_SEO_CONFIG_DIR lets tests (and anyone running an isolated budget) point
 # the ledger somewhere other than the real one. Resolved at import.
 CONFIG_DIR = Path(
-    os.environ.get("CLAUDE_SEO_CONFIG_DIR") or Path.home() / ".config" / "claude-seo"
+    os.environ.get("SEO_CONFIG_DIR")
+    or os.environ.get("CLAUDE_SEO_CONFIG_DIR")
+    or Path.home() / ".config" / "claude-seo"
 )
 CONFIG_FILE = CONFIG_DIR / "dataforseo-costs.json"
 LEDGER_FILE = CONFIG_DIR / "dataforseo-ledger.json"

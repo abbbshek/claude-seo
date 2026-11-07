@@ -76,6 +76,14 @@ def script_root():
     return pathlib.Path(script_dir).parent
 
 
+def skills_root(root):
+    """Resolve the skills tree for repository and OpenCode installs."""
+    override = os.environ.get("SEO_SKILLS_DIR")
+    if override:
+        return pathlib.Path(override).expanduser()
+    return root / "skills"
+
+
 def parse_args():
     epilog = (
         "Modes: no flags sync all files to disk; --dry-run reports changes "
@@ -272,7 +280,7 @@ def record_write(root, path, content, dry_run, changes):
 
 def sync(args):
     root = script_root()
-    refs = root / "skills" / "seo-flow" / "references"
+    refs = skills_root(root) / "seo-flow" / "references"
     today = datetime.date.today().isoformat()
     headers = _base_headers()
     changes = {"added": [], "updated": [], "unchanged": [], "hashes": {}}

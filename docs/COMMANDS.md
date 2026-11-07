@@ -4,6 +4,11 @@
 
 All Claude SEO commands start with `/seo` followed by a subcommand.
 
+OpenCode supports both `/seo <subcommand>` and `/seo-<subcommand>`. The
+OpenCode runtime command is `"$SEO_ROOT/scripts/seo"`; the plugin sets
+`SEO_ROOT` automatically. See [OPENCODE.md](OPENCODE.md) for installation and
+model configuration.
+
 ## Page-fetching script
 
 Use `"${CLAUDE_PLUGIN_ROOT}/scripts/claude-seo" run fetch_page.py https://example.com --json` for structured

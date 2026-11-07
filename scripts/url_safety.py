@@ -326,13 +326,14 @@ def _parse_local_target(entry: str) -> Optional[tuple[str, Optional[int]]]:
 
 
 def _local_targets() -> tuple[tuple[str, Optional[int]], ...]:
-    """The parsed contents of ``CLAUDE_SEO_LOCAL_TARGETS``.
+    """The parsed contents of ``SEO_LOCAL_TARGETS`` (or the legacy
+    ``CLAUDE_SEO_LOCAL_TARGETS``).
 
     Read on every call rather than cached: the variable is operator
     configuration, and a cached empty tuple from import time would make the
     setting silently inert in a long-lived process.
     """
-    raw = os.environ.get(_LOCAL_TARGETS_ENV, "")
+    raw = os.environ.get(_LOCAL_TARGETS_ENV) or os.environ.get("SEO_LOCAL_TARGETS", "")
     if not raw.strip():
         return ()
     parsed = (_parse_local_target(part) for part in raw.split(","))

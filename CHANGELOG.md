@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Native OpenCode layer: `.opencode/skills`, `.opencode/agents`,
+  `.opencode/commands`, and `.opencode/plugins/claude-seo`. The layer preserves
+  all 26 skills, 19 subagents, 35 commands, and the optional extensions.
+- `scripts/opencode_sync.py` generates the OpenCode layer from the canonical
+  `skills/` and `agents/` trees and supports a `--check` drift gate.
+- `install-opencode.sh` and `uninstall-opencode.sh` for global or project-local
+  OpenCode installs. No Claude Code subscription or CLI is required.
+- `scripts/opencode_extensions.py` installs the optional DataForSEO, Firecrawl,
+  Ahrefs, Banana, Matomo, Bing Webmaster, Profound, SE Ranking, and Unlighthouse
+  integrations into OpenCode without editing `opencode.json`.
+- `scripts/opencode_models.py` writes per-agent model profiles for free
+  OpenCode, Cloudflare Workers AI, and Google Vertex models.
+- `scripts/seo` launcher plus `SEO_*` environment aliases for provider-neutral
+  runtime paths.
+- OpenCode plugin hooks for runtime environment injection, MCP registration,
+  per-agent model overrides, and JSON-LD validation after edits.
+
 ## [2.5.0] - 2026-10-22
 
 Security and accuracy fixes from a full audit, and Claude Desktop installs again.

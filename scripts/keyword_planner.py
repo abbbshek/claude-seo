@@ -39,10 +39,10 @@ except ImportError:
     HAS_GOOGLE_ADS = False
 
 try:
-    from google_auth import load_config
+    from google_auth import TOKEN_PATH, load_config
 except ImportError:
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from google_auth import load_config
+    from google_auth import TOKEN_PATH, load_config
 
 
 def _build_ads_client() -> Optional[object]:
@@ -87,7 +87,7 @@ def _build_ads_client() -> Optional[object]:
             ads_config["login_customer_id"] = login_customer_id
 
         # Try to use OAuth token if available
-        token_path = os.path.expanduser("~/.config/claude-seo/oauth-token.json")
+        token_path = TOKEN_PATH
         if os.path.exists(token_path):
             with open(token_path) as f:
                 token_data = json.load(f)

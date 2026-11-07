@@ -1,3 +1,13 @@
+# OpenCode runtime state (generated definitions are tracked)
+.opencode/.venv/
+.opencode/data/
+.opencode/claude-seo.root
+.opencode/claude-seo.env.json
+.opencode/claude-seo.mcp.json
+.opencode/claude-seo.models.json
+.opencode/claude-seo.extensions.json
+.opencode/claude-seo.manifest.json
+
 # Generated output
 output/
 .planning/

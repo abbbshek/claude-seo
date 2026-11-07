@@ -14,6 +14,10 @@ clustering, search experience optimization (SXO), SEO drift monitoring, e-commer
 SEO, and international SEO with cultural adaptation profiles. Matomo is available
 as an optional extension for self-hosted analytics.
 
+OpenCode users: a generated native layer lives in `.opencode/` and is documented
+in `docs/OPENCODE.md`. The canonical `skills/` and `agents/` trees remain the
+source of truth; run `python3 scripts/opencode_sync.py` after editing them.
+
 ## Architecture
 
 ```
@@ -90,7 +94,7 @@ claude-seo/
     seo-flow.md                  # FLOW framework integration
   hooks/                           # Quality gate hooks
     hooks.json                   # PostToolUse schema validation
-  scripts/                         # 60 Python execution scripts
+  scripts/                         # 63 Python execution scripts
     google_auth.py               # Credential management (OAuth, SA, API key, 4-tier detection)
     backlinks_auth.py            # Backlink API credential management (Moz, Bing)
     moz_api.py                   # Moz Link Explorer API (DA/PA, spam, domains, anchors)
@@ -151,6 +155,9 @@ claude-seo/
     verify_release.py            # Verify checkout integrity against a release manifest
     sitemap_discovery.py         # Sitemap discovery (robots.txt, common paths)
     runtime.py                   # Managed runtime behind the claude-seo launcher
+    opencode_sync.py             # Generate the OpenCode-native layer from canonical sources
+    opencode_extensions.py       # Install optional SEO extensions for OpenCode
+    opencode_models.py           # Write per-agent OpenCode model profiles
   schema/                          # Schema.org JSON-LD templates
   extensions/                      # Optional add-on install helpers
     dataforseo/                  # DataForSEO MCP install scripts

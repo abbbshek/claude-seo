@@ -90,6 +90,7 @@ If you are auditing, these are the high-leverage files:
 ## Security-relevant practices
 
 - No credentials or API keys are committed to this repository. `.gitignore` blocks every known credential filename pattern.
-- Install scripts write only to user-level directories under `~/.claude/` and `~/.config/claude-seo/`.
-- Python dependencies install into an isolated virtual environment. Plugin installs use persistent `CLAUDE_PLUGIN_DATA`; manual installs use `~/.claude/skills/seo/.venv/`. The runtime never falls back to global or user package installation.
+- Install scripts write only to user-level directories under `~/.claude/`, `~/.config/claude-seo/`, `$XDG_CONFIG_HOME/opencode/`, and `$XDG_DATA_HOME/claude-seo/`.
+- OpenCode extension credentials are written to `$XDG_CONFIG_HOME/opencode/claude-seo.env.json`, `$XDG_CONFIG_HOME/opencode/claude-seo.mcp.json`, and `~/.config/claude-seo/matomo.json`, all with mode `0600` where applicable. The OpenCode installer does not modify `~/.claude.json` or `~/.claude/settings.json`.
+- Python dependencies install into an isolated virtual environment. Plugin installs use persistent `CLAUDE_PLUGIN_DATA`; manual installs use `~/.claude/skills/seo/.venv/`; OpenCode installs use `$XDG_DATA_HOME/claude-seo/.venv/`. The runtime never falls back to global or user package installation.
 - Every new fetcher of a user-supplied or page-derived URL must route through `scripts/url_safety.py`. There is no exception for "trusted" URLs.

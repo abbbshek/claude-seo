@@ -200,6 +200,62 @@ cp /path/to/claude-seo/agents/*.md ~/.claude/agents/
 
 3. **Logs:** Check Claude Code's output for error details
 
+## OpenCode
+
+**Symptom:** `/seo` is missing.
+
+```bash
+ls ~/.config/opencode/commands/seo.md
+opencode plugin list
+```
+
+If the files are missing, run `./install-opencode.sh`. If they exist, reload
+OpenCode or restart the service.
+
+**Symptom:** subagents are missing.
+
+```bash
+opencode debug agents
+```
+
+The list should include 19 `seo-*` agents. If not, confirm
+`~/.config/opencode/agents/seo-technical.md` exists.
+
+**Symptom:** `SEO_ROOT` is empty in a shell command.
+
+The plugin did not load or could not find the runtime. Check
+`opencode plugin list`, then confirm `~/.config/opencode/claude-seo.root`
+contains the runtime path. Set `SEO_ROOT` manually to test.
+
+**Symptom:** runtime setup is required.
+
+```bash
+"$SEO_ROOT/scripts/seo" setup
+"$SEO_ROOT/scripts/seo" doctor --json
+```
+
+**Symptom:** Chromium is unavailable on Fedora.
+
+Playwright may use its Ubuntu fallback build. Install the Fedora packages listed
+in [OPENCODE.md](OPENCODE.md), then run:
+
+```bash
+SEO_DATA_DIR=~/.local/share/claude-seo \
+  ~/.local/share/claude-seo/.venv/bin/python -m playwright install chromium
+```
+
+**Symptom:** an MCP extension is missing.
+
+```bash
+python3 scripts/opencode_extensions.py status
+python3 scripts/opencode_extensions.py install <name>
+```
+
+**Symptom:** a model override is ignored.
+
+Confirm `~/.config/opencode/claude-seo.models.json` exists and is valid JSON,
+then reload OpenCode. The plugin applies overrides when a subagent is launched.
+
 ## Debug Mode
 
 To see detailed output, check Claude Code's internal logs or run scripts directly:

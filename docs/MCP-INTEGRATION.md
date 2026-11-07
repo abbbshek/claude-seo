@@ -4,6 +4,28 @@
 
 Claude SEO can integrate with Model Context Protocol (MCP) servers to access external APIs and enhance analysis capabilities.
 
+## OpenCode
+
+OpenCode uses dedicated files managed by the plugin:
+
+- `$XDG_CONFIG_HOME/opencode/claude-seo.mcp.json` for server definitions
+- `$XDG_CONFIG_HOME/opencode/claude-seo.env.json` for credentials
+- `$XDG_CONFIG_HOME/opencode/claude-seo.models.json` for optional agent models
+
+Install an extension with:
+
+```bash
+python3 scripts/opencode_extensions.py install dataforseo
+python3 scripts/opencode_extensions.py status
+```
+
+The plugin reads these files and registers servers through `ctx.mcp.transform`.
+It does not edit `opencode.json`. OpenCode exposes tools as
+`<server>_<tool>`; in Code Mode call `tools.<server>.<tool>(...)`.
+
+See [OPENCODE.md](OPENCODE.md) for the full extension table and credential
+handling.
+
 ## Available Integrations
 
 ### PageSpeed Insights API

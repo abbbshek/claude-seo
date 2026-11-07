@@ -78,6 +78,30 @@ back to global or user package installation.
 If core setup failed, rerun the inspected installer. If only Chromium failed,
 the installer reports a degraded result and raw-fetch analysis remains available.
 
+## OpenCode Installation
+
+OpenCode uses a generated native layer and does not require Claude Code.
+
+```bash
+git clone --depth 1 https://github.com/AgriciDaniel/claude-seo.git
+cd claude-seo
+./install-opencode.sh
+```
+
+Project-local definitions:
+
+```bash
+./install-opencode.sh --project /path/to/site
+```
+
+The installer writes skills, agents, commands, and the plugin to
+`$XDG_CONFIG_HOME/opencode`, and the managed runtime to
+`$XDG_DATA_HOME/claude-seo`. It preserves an existing `opencode.json` and writes
+a merge snippet to `opencode.json.claude-seo` instead of replacing it.
+
+See [OPENCODE.md](OPENCODE.md) for commands, model profiles, extensions, Fedora
+packages, and troubleshooting.
+
 ## Installation Paths
 
 The installer copies files to:

@@ -754,6 +754,8 @@ def _system_proxies(monkeypatch, mapping: dict) -> None:
     """Pin what ``requests`` sees as the environment's proxies. Going through
     the real ``getproxies`` would pick up the developer's own HTTPS_PROXY, or
     the Windows registry proxy, and make these tests machine-dependent."""
+    monkeypatch.delenv("no_proxy", raising=False)
+    monkeypatch.delenv("NO_PROXY", raising=False)
     monkeypatch.setattr(url_safety.requests.utils, "getproxies", lambda: dict(mapping))
 
 
